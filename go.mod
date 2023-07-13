@@ -1,4 +1,4 @@
-module github.com/darnfish/email-forward-parser-go
+module github.com/darnfish/email-forward-parser
 
 go 1.20
 
