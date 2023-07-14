@@ -158,7 +158,7 @@ var OriginalSubject = []*regexp.Regexp{
 }
 
 var OriginalSubjectLax = []*regexp.Regexp{
-	regexp.MustCompile(`(?i)\s?:(.+)`),          // Yahoo Mail (en)
+	regexp.MustCompile(`(?i)Subject\s?:(.+)`),   // Yahoo Mail (en)
 	regexp.MustCompile(`(?i)Emne\s?:(.+)`),      // Yahoo Mail (da, no)
 	regexp.MustCompile(`(?i)Předmět\s?:(.+)`),   // Yahoo Mail (cs)
 	regexp.MustCompile(`(?i)Betreff\s?:(.+)`),   // Yahoo Mail (de)
