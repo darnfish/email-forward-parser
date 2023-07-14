@@ -44,28 +44,25 @@ func LoopRegexesSplit(regexes []*regexp.Regexp, str string, highestPosition bool
 	return match
 }
 
-func LoopRegexesMatch(regexes []*regexp.Regexp, str string, highestPosition bool) []string {
+func LoopRegexesMatch(regexes []*regexp.Regexp, str string, highestPosition bool) ([]string, *regexp.Regexp) {
 	var match []string
+	var regex *regexp.Regexp
 
 	for _, re := range regexes {
 		currentMatch := re.FindStringSubmatch(str)
 		if currentMatch != nil {
 			if highestPosition {
-				if match == nil {
+				if match == nil || match[0] < currentMatch[0] {
 					match = currentMatch
-				} else if match[0] < currentMatch[0] {
-					match = currentMatch
+					regex = re
 				}
 			} else {
 				match = currentMatch
+				regex = re
 				break
 			}
 		}
 	}
 
-	if match == nil {
-		return []string{}
-	}
-
-	return match
+	return match, regex
 }

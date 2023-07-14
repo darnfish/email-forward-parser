@@ -7,7 +7,7 @@ import (
 )
 
 func ParseSubject(subject string) string {
-	match := LoopRegexesMatch(Subject, subject, true)
+	match, _ := LoopRegexesMatch(Subject, subject, true)
 
 	if len(match) > 0 {
 		return trimString(match[1])
@@ -129,13 +129,15 @@ func ParseOriginalFrom(text string, body string) MailboxResult {
 		}
 	}
 
-	match := LoopRegexesMatch(SeparatorWithInformation, body, true)
+	match, pattern := LoopRegexesMatch(SeparatorWithInformation, body, true)
 
 	if len(match) == 4 {
-		// TODO - match.groups?
+		namedMatches := findNamedMatches(pattern, body)
+
+		return PrepareMailbox(namedMatches["from_name"], namedMatches["from_address"])
 	}
 
-	match = LoopRegexesMatch(OriginalFromLax, text, true)
+	match, _ = LoopRegexesMatch(OriginalFromLax, text, true)
 
 	if len(match) > 1 {
 		name = match[2]
@@ -175,13 +177,13 @@ func ParseOriginalCC(text string) []MailboxResult {
 }
 
 func ParseOriginalSubject(text string) string {
-	match := LoopRegexesMatch(OriginalSubject, text, true)
+	match, _ := LoopRegexesMatch(OriginalSubject, text, true)
 
 	if len(match) > 0 {
 		return trimString(match[1])
 	}
 
-	match = LoopRegexesMatch(OriginalSubjectLax, text, true)
+	match, _ = LoopRegexesMatch(OriginalSubjectLax, text, true)
 
 	if len(match) > 0 {
 		return trimString(match[1])
@@ -191,20 +193,22 @@ func ParseOriginalSubject(text string) string {
 }
 
 func ParseOriginalDate(text string, body string) string {
-	match := LoopRegexesMatch(OriginalDate, text, true)
+	match, _ := LoopRegexesMatch(OriginalDate, text, true)
 
 	if len(match) > 0 {
 		return trimString(match[1])
 	}
 
-	match = LoopRegexesMatch(SeparatorWithInformation, body, true)
+	match, pattern := LoopRegexesMatch(SeparatorWithInformation, body, true)
 
 	if len(match) == 4 {
-		// TODO - match.groups?
+		namedMatches := findNamedMatches(pattern, body)
+
+		return trimString(namedMatches["date"])
 	}
 
 	text = LoopRegexesReplace(OriginalSubjectLax, text)
-	match = LoopRegexesMatch(OriginalDateLax, text, true)
+	match, _ = LoopRegexesMatch(OriginalDateLax, text, true)
 
 	if len(match) > 0 {
 		return trimString(match[1])
@@ -214,7 +218,7 @@ func ParseOriginalDate(text string, body string) string {
 }
 
 func ParseMailbox(regexes []*regexp.Regexp, text string) []MailboxResult {
-	match := LoopRegexesMatch(regexes, text, true)
+	match, _ := LoopRegexesMatch(regexes, text, true)
 
 	if len(match) > 0 {
 		mailboxesLine := trimString(match[len(match)-1])
@@ -223,7 +227,7 @@ func ParseMailbox(regexes []*regexp.Regexp, text string) []MailboxResult {
 			mailboxes := []MailboxResult{}
 
 			for len(mailboxesLine) > 0 {
-				mailboxMatch := LoopRegexesMatch(Mailbox, mailboxesLine, true)
+				mailboxMatch, _ := LoopRegexesMatch(Mailbox, mailboxesLine, true)
 
 				if len(mailboxMatch) > 0 {
 					var name string
@@ -271,7 +275,7 @@ func PrepareMailbox(name string, address string) MailboxResult {
 	name = trimString(name)
 	address = trimString(address)
 
-	match := LoopRegexesMatch(MailboxAddress, address, true)
+	match, _ := LoopRegexesMatch(MailboxAddress, address, true)
 
 	if len(match) == 0 {
 		name = address
@@ -310,6 +314,7 @@ func Read(body string, subject string) ReadResult {
 	parsedSubject := ""
 
 	if len(subject) > 0 {
+		subject = preprocessString(strings.Clone(subject))
 		parsedSubject = ParseSubject(subject)
 
 		if len(parsedSubject) > 0 {
@@ -318,6 +323,7 @@ func Read(body string, subject string) ReadResult {
 	}
 
 	if len(subject) == 0 || forwarded {
+		body = preprocessString(strings.Clone(body))
 		bodyResult = ParseBody(body, forwarded)
 
 		if len(bodyResult.Email) > 0 {

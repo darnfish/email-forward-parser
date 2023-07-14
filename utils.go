@@ -3,12 +3,31 @@ package emailforwardparser
 import (
 	"fmt"
 	"strings"
+	"unicode"
 
 	regexp "github.com/wasilibs/go-re2"
 )
 
 func trimString(s string) string {
 	return strings.TrimSpace(s)
+}
+
+func preprocessString(s string) string {
+	return strings.TrimFunc(s, func(r rune) bool {
+		return !unicode.IsGraphic(r)
+	})
+}
+
+// https://stackoverflow.com/a/53587770/7082789
+func findNamedMatches(pattern *regexp.Regexp, str string) map[string]string {
+	match := pattern.FindStringSubmatch(str)
+
+	results := map[string]string{}
+	for i, name := range match {
+		results[pattern.SubexpNames()[i]] = name
+	}
+
+	return results
 }
 
 func splitWithRegexp(pattern *regexp.Regexp, str string) []string {
