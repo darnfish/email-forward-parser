@@ -125,7 +125,7 @@ func ParseOriginalFrom(text string, body string) MailboxResult {
 		author := authors[0]
 
 		if len(author.Name) > 0 || len(author.Address) > 0 {
-			return authors[0]
+			return author
 		}
 	}
 
@@ -170,7 +170,6 @@ func ParseOriginalCC(text string) []MailboxResult {
 
 	text = LoopRegexesReplace(OriginalSubjectLax, text)
 	text = LoopRegexesReplace(OriginalDateLax, text)
-	text = LoopRegexesReplace(OriginalCCLax, text)
 
 	return ParseMailbox(OriginalCCLax, text)
 }
