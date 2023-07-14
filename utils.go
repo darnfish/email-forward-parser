@@ -1,6 +1,7 @@
 package emailforwardparser
 
 import (
+	"fmt"
 	"strings"
 
 	regexp "github.com/wasilibs/go-re2"
@@ -15,6 +16,11 @@ func splitWithRegexp(pattern *regexp.Regexp, str string) []string {
 
 	result := []string{}
 	prevIndex := 0
+
+	// Because if the match is at index 0 it won't return the whitespace before it like JS does
+	if len(splitIndices) > 0 && splitIndices[0][0] == 0 {
+		result = append(result, "")
+	}
 
 	for _, indices := range splitIndices {
 		for i := 0; i < len(indices); i += 2 {
@@ -63,4 +69,20 @@ func reconciliateSplitMatch(match []string, minSubstrings int, defaultSubstrings
 	}
 
 	return str
+}
+
+func trimArrayForLogging(arr []string) string {
+	out := ""
+
+	for i, item := range arr {
+		max := 10
+
+		if len(item) < max {
+			max = len(item)
+		}
+
+		out = out + " " + fmt.Sprint(i) + ". " + strings.ReplaceAll(item[0:max], "\n", "NL")
+	}
+
+	return out
 }

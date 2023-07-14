@@ -72,7 +72,7 @@ func _TestEmail(t *testing.T, result ReadResult, entryName string, skipFrom bool
 	}
 
 	if result.Email.Subject != _Subject {
-		t.Error(entryName, "result.Email.Subject != _Subject", result.Email.Subject, _Subject)
+		t.Error(entryName, "result.Email.Subject != _Subject, result.Email.Subject=", result.Email.Subject, "_Subject=", _Subject)
 	}
 
 	if !skipBody {
@@ -109,7 +109,7 @@ func _TestEmail(t *testing.T, result ReadResult, entryName string, skipFrom bool
 				t.Error(entryName, "result.Email.To[0].Address != _ToAddress1")
 			}
 		} else {
-			t.Error(entryName, "len(result.Email.To) == 0")
+			t.Error(entryName, "len(result.Email.To) == 0, expected", _ToName1, _ToAddress1)
 		}
 	}
 
@@ -131,7 +131,7 @@ func _TestEmail(t *testing.T, result ReadResult, entryName string, skipFrom bool
 				t.Error(entryName, "result.Email.CC[1].Address != _CcAddress2")
 			}
 		} else {
-			t.Error(entryName, "len(result.Email.CC) == 0")
+			t.Error(entryName, "len(result.Email.CC) == 0, expected", _CcName1, _CcAddress1, _CcName2, _CcAddress2)
 		}
 	}
 
