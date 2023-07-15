@@ -12,7 +12,7 @@ go get "https://github.com/darnfish/email-forward-parser"
 ```go
 import efp "github.com/darnfish/email-forward-parser"
 
-result := emailefp.Read(body, subject)
+result := efp.Read(body, subject)
 
 log.Println(result.Forwarded) // true
 
