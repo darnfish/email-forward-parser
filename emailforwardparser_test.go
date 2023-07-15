@@ -1,10 +1,13 @@
 package emailforwardparser
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strings"
 	"testing"
+
+	regexp "github.com/wasilibs/go-re2"
 )
 
 var _Subject = "Integer consequat non purus"
@@ -518,7 +521,7 @@ func TestAlternative8(t *testing.T) {
 		_TestEmail(t, result, entryName, false, false, false, false, true)
 
 		email, _ := _Read(entryName, "")
-		separator := "Subject: " + _Subject + "\n"
+		separator := fmt.Sprintf("Subject: %s\n", _Subject)
 
 		body := trimString(strings.Split(email, separator)[1])
 
@@ -598,8 +601,6 @@ func TestAlternative12(t *testing.T) {
 	}, func(result ReadResult, entryName string) {
 		_TestEmail(t, result, entryName, true, true, true, true, false)
 
-		log.Println(result.Email.From.Name)
-
 		if result.Email.From.Name != _FromName {
 			t.Error(entryName)
 		}
@@ -619,10 +620,79 @@ func TestAlternative12(t *testing.T) {
 }
 
 func TestAlternative13(t *testing.T) {
+	_LoopTests([]string{
+		"apple_mail_en_body_alt_13",
+	}, func(result ReadResult, entryName string) {
+		_TestEmail(t, result, entryName, false, false, false, false, true)
+
+		email, _ := _Read(entryName, "")
+		separator := fmt.Sprintf("Subject: %s\n", _Subject)
+
+		body := strings.Split(email, separator)[1]
+
+		body = regexp.MustCompile(`(?m)^(>+)\s?$`).ReplaceAllString(body, "")
+		body = regexp.MustCompile(`(?m)^(>+)\s?`).ReplaceAllString(body, "")
+		body = preprocessString(body) // original test is .trim(), but weird js stuff
+
+		if result.Email.Body != body {
+			t.Error(entryName)
+		}
+
+		if !strings.HasPrefix(result.Email.Body, _Body) {
+			t.Error(entryName)
+		}
+	})
 }
 
 func TestAlternative14(t *testing.T) {
+	_LoopTests([]string{
+		"gmail_en_body_alt_14",
+		"outlook_live_en_body_alt_14,outlook_live_en_subject",
+		"new_outlook_2019_en_body_alt_14,new_outlook_2019_fr_subject",
+		"new_outlook_2019_en_body_alt_14_1,new_outlook_2019_fr_subject",
+		"thunderbird_en_body_alt_14",
+	}, func(result ReadResult, entryName string) {
+		_TestEmail(t, result, entryName, false, false, false, false, true)
+
+		email, _ := _Read(entryName, "")
+		separator := fmt.Sprintf("Subject: %s\n", _Subject)
+
+		switch entryName {
+		case "thunderbird_en_body_alt_14":
+			separator = fmt.Sprintf("CC: 	%s <%s>, %s <%s>\n", _CcName1, _CcAddress1, _CcName2, _CcAddress2)
+		}
+
+		body := strings.Split(email, separator)[1]
+		body = preprocessString(body) // original test is .trim(), but weird js stuff
+
+		if result.Email.Body != body {
+			t.Error(entryName)
+		}
+	})
 }
 
 func TestAlternative15(t *testing.T) {
+	_LoopTests([]string{
+		"gmail_en_body_alt_15",
+		"outlook_live_en_body_alt_15,outlook_live_en_subject",
+		"new_outlook_2019_en_body_alt_15,new_outlook_2019_fr_subject",
+		"thunderbird_en_body_alt_15",
+	}, func(result ReadResult, entryName string) {
+		_TestEmail(t, result, entryName, false, false, false, false, true)
+
+		email, _ := _Read(entryName, "")
+		separator := fmt.Sprintf("Subject: %s\n", _Subject)
+
+		switch entryName {
+		case "thunderbird_en_body_alt_15":
+			separator = fmt.Sprintf("CC: 	%s <%s>, %s <%s>\n", _CcName1, _CcAddress1, _CcName2, _CcAddress2)
+		}
+
+		body := strings.Split(email, separator)[1]
+		body = preprocessString(body) // original test is .trim(), but weird js stuff
+
+		if result.Email.Body != body {
+			t.Error(entryName)
+		}
+	})
 }
