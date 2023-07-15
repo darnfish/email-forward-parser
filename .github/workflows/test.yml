@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build, Test and Deploy
 
 on:
   push:
@@ -23,3 +23,5 @@ jobs:
       uses: codecov/codecov-action@v3
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    - name: Deploy to pkg.go.dev
+      run: GOPROXY=proxy.golang.org go list -m github.com/darnfish/email-forward-parser@$GITHUB_REF_NAME
