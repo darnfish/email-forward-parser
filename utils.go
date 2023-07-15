@@ -40,8 +40,46 @@ func splitWithRegexp(pattern *regexp.Regexp, str string) []string {
 	result := []string{}
 	prevIndex := 0
 
+	if len(splitIndices) == 0 {
+		return []string{str}
+	}
+
+	// Remove duplicates
+	newSplitIndices := [][]int{}
+
+	// For each indicie
+	for _, indices := range splitIndices {
+		// Create an empty array
+		newIndicie := []int{}
+
+		// For eeach pair of indicies
+		for i := 0; i < len(indices); i += 2 {
+			// Get the current two indicies
+			ia, ib := indices[i], indices[i+1]
+			// If it's not the first pair
+			if i > 0 {
+				// Get the last two indicies
+				ya, yb := indices[i-2], indices[i-1]
+
+				// If they match, continue
+				if ia == ya && ib == yb {
+					continue
+				}
+			}
+
+			// If all is good, add to new indicie
+			newIndicie = append(newIndicie, ia)
+			newIndicie = append(newIndicie, ib)
+		}
+
+		// Add new indicies to newsplitindicies
+		newSplitIndices = append(newSplitIndices, newIndicie)
+	}
+
+	splitIndices = newSplitIndices
+
 	// Because if the match is at index 0 it won't return the whitespace before it like JS does
-	if len(splitIndices) > 0 && splitIndices[0][0] == 0 {
+	if splitIndices[0][0] == 0 {
 		result = append(result, "")
 	}
 

@@ -24,7 +24,7 @@ var _CcName1 = "Walter Sheltan"
 var _CcAddress2 = "nicholas@globex.corp"
 var _CcName2 = "Nicholas"
 
-func _ReadAndParse(emailFile string, subjectFile string) ReadResult {
+func _Read(emailFile string, subjectFile string) (string, string) {
 	var email string
 	var subject string
 
@@ -43,6 +43,12 @@ func _ReadAndParse(emailFile string, subjectFile string) ReadResult {
 
 		subject = string(subjectBytes)
 	}
+
+	return email, subject
+}
+
+func _ReadAndParse(emailFile string, subjectFile string) ReadResult {
+	email, subject := _Read(emailFile, subjectFile)
 
 	return Read(email, subject)
 }
@@ -424,30 +430,192 @@ func TestAlternative3(t *testing.T) {
 }
 
 func TestAlternative4(t *testing.T) {
+	_LoopTests([]string{
+		"apple_mail_en_body_alt_4",
+		"gmail_en_body_alt_4",
+		"hubspot_en_body_alt_4",
+		"missive_en_body_alt_4",
+		"outlook_live_en_body_alt_4,outlook_live_en_subject_alt_4",
+		"new_outlook_2019_en_body_alt_4,new_outlook_2019_en_subject_alt_4",
+		"outlook_2019_en_body_alt_4,outlook_2019_en_subject_alt_4",
+		"yahoo_en_body_alt_4",
+		"thunderbird_en_body_alt_4",
+	}, func(result ReadResult, entryName string) {
+		if result.Forwarded {
+			t.Error(entryName)
+		}
+	})
 }
 
 func TestAlternative5(t *testing.T) {
+	_LoopTests([]string{
+		"apple_mail_en_body_alt_5",
+	}, func(result ReadResult, entryName string) {
+		_TestEmail(t, result, entryName, true, false, false, true, false)
+
+		if len(result.Email.From.Name) > 0 {
+			t.Error(entryName)
+		}
+
+		if result.Email.From.Address != _FromAddress {
+			t.Error(entryName)
+		}
+	})
 }
 
 func TestAlternative6(t *testing.T) {
+	_LoopTests([]string{
+		"apple_mail_en_body_alt_6",
+	}, func(result ReadResult, entryName string) {
+		_TestEmail(t, result, entryName, false, false, true, true, false)
+	})
 }
 
 func TestAlternative7(t *testing.T) {
+	_LoopTests([]string{
+		"apple_mail_en_body_alt_7",
+	}, func(result ReadResult, entryName string) {
+		_TestEmail(t, result, entryName, false, true, true, true, false)
+
+		if result.Email.To[0].Name != "Bessie, Berry" {
+			t.Error(entryName)
+		}
+
+		if result.Email.To[0].Address != _ToAddress1 {
+			t.Error(entryName)
+		}
+
+		if result.Email.To[1].Name != _ToName2 {
+			t.Error(entryName)
+		}
+
+		if result.Email.To[1].Address != _ToAddress2 {
+			t.Error(entryName)
+		}
+
+		if len(result.Email.CC[0].Name) > 0 {
+			t.Error(entryName)
+		}
+
+		if result.Email.CC[0].Address != _CcAddress1 {
+			t.Error(entryName)
+		}
+
+		if len(result.Email.CC[1].Name) > 0 {
+			t.Error(entryName)
+		}
+
+		if result.Email.CC[1].Address != _CcAddress2 {
+			t.Error(entryName)
+		}
+	})
 }
 
 func TestAlternative8(t *testing.T) {
+	_LoopTests([]string{
+		"outlook_live_en_body_alt_8",
+	}, func(result ReadResult, entryName string) {
+		_TestEmail(t, result, entryName, false, false, false, false, true)
+
+		email, _ := _Read(entryName, "")
+		separator := "Subject: " + _Subject + "\n"
+
+		body := trimString(strings.Split(email, separator)[1])
+
+		if result.Email.Body != body {
+			t.Error(entryName)
+		}
+	})
 }
 
 func TestAlternative9(t *testing.T) {
+	_LoopTests([]string{
+		"outlook_live_en_body_alt_9",
+	}, func(result ReadResult, entryName string) {
+		_TestEmail(t, result, entryName, false, false, false, false, false)
+	})
 }
 
 func TestAlternative10(t *testing.T) {
+	_LoopTests([]string{
+		"outlook_live_en_body_alt_10,outlook_live_en_subject_alt_10",
+	}, func(result ReadResult, entryName string) {
+		_TestEmail(t, result, entryName, false, false, false, false, false)
+	})
 }
 
 func TestAlternative11(t *testing.T) {
+	_LoopTests([]string{
+		"outlook_live_en_body_alt_11",
+	}, func(result ReadResult, entryName string) {
+		_TestEmail(t, result, entryName, true, true, true, true, false)
+
+		if result.Email.From.Name != "John, Doe" {
+			t.Error(entryName)
+		}
+
+		if result.Email.From.Address != _FromAddress {
+			t.Error(entryName)
+		}
+
+		if result.Email.To[0].Name != "Bessie, Berry" {
+			t.Error(entryName)
+		}
+
+		if result.Email.To[0].Address != _ToAddress1 {
+			t.Error(entryName)
+		}
+
+		if len(result.Email.To[1].Name) > 0 {
+			t.Error(entryName)
+		}
+
+		if result.Email.To[1].Address != _ToAddress2 {
+			t.Error(entryName)
+		}
+
+		if result.Email.CC[0].Name != "Walter, Sheltan" {
+			t.Error(entryName)
+		}
+
+		if result.Email.CC[0].Address != _CcAddress1 {
+			t.Error(entryName)
+		}
+
+		if result.Email.CC[1].Name != "Nicholas, Landers" {
+			t.Error(entryName)
+		}
+
+		if result.Email.CC[1].Address != _CcAddress2 {
+			t.Error(entryName)
+		}
+	})
 }
 
 func TestAlternative12(t *testing.T) {
+	_LoopTests([]string{
+		"unknown_en_body_alt_12,unknown_en_subject",
+	}, func(result ReadResult, entryName string) {
+		_TestEmail(t, result, entryName, true, true, true, true, false)
+
+		log.Println(result.Email.From.Name)
+
+		if result.Email.From.Name != _FromName {
+			t.Error(entryName)
+		}
+
+		if len(result.Email.From.Address) > 0 {
+			t.Error(entryName)
+		}
+
+		if result.Email.To[0].Name != _ToName1 {
+			t.Error(entryName)
+		}
+
+		if len(result.Email.To[0].Address) > 0 {
+			t.Error(entryName)
+		}
+	})
 }
 
 func TestAlternative13(t *testing.T) {
