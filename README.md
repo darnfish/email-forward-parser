@@ -1,4 +1,8 @@
 # email-forward-parser
+[![Go Reference](https://pkg.go.dev/badge/github.com/darnfish/email-forward-parser.svg)](https://pkg.go.dev/github.com/darnfish/email-forward-parser)
+[![Build and Test](https://github.com/darnfish/email-forward-parser/actions/workflows/test.yml/badge.svg)](https://github.com/darnfish/email-forward-parser/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/darnfish/email-forward-parser/branch/main/graph/badge.svg?token=P8KQD92JZH)](https://codecov.io/gh/darnfish/email-forward-parser)
+
 Parses forwarded emails and extracts original content.
 
 This is a Go port of [crisp-oss/email-forward-parser](https://github.com/crisp-oss/email-forward-parser).
