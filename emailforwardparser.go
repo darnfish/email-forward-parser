@@ -6,8 +6,8 @@ import (
 	regexp "github.com/wasilibs/go-re2"
 )
 
-func ParseSubject(subject string) string {
-	match, _ := LoopRegexesMatch(Subject, subject, true)
+func _ParseSubject(subject string) string {
+	match, _ := _LoopRegexesMatch(_Subject, subject, true)
 
 	if len(match) > 0 {
 		return trimString(match[1])
@@ -16,24 +16,24 @@ func ParseSubject(subject string) string {
 	return ""
 }
 
-type ParseBodyResult struct {
+type _ParseBodyResult struct {
 	Body    string
 	Message string
 	Email   string
 }
 
-func ParseBody(body string, forwarded bool) ParseBodyResult {
-	body = CarriageReturn.ReplaceAllString(body, "\n")
-	body = ByteOrderMark.ReplaceAllString(body, "")
-	body = TrailingNonBreakingSpace.ReplaceAllString(body, "")
-	body = NonBreakingSpace.ReplaceAllString(body, " ")
+func _ParseBody(body string, forwarded bool) _ParseBodyResult {
+	body = _CarriageReturn.ReplaceAllString(body, "\n")
+	body = _ByteOrderMark.ReplaceAllString(body, "")
+	body = _TrailingNonBreakingSpace.ReplaceAllString(body, "")
+	body = _NonBreakingSpace.ReplaceAllString(body, " ")
 
-	match := LoopRegexesSplit(Separator, body, true)
+	match := _LoopRegexesSplit(_Separator, body, true)
 
 	if len(match) > 2 {
 		email := reconciliateSplitMatch(match, 3, []int{2}, nil)
 
-		return ParseBodyResult{
+		return _ParseBodyResult{
 			Body:    body,
 			Message: trimString(match[0]),
 			Email:   trimString(email),
@@ -41,12 +41,12 @@ func ParseBody(body string, forwarded bool) ParseBodyResult {
 	}
 
 	if forwarded {
-		match = LoopRegexesSplit(OriginalFrom, body, true)
+		match = _LoopRegexesSplit(_OriginalFrom, body, true)
 
 		if len(match) > 3 {
 			email := reconciliateSplitMatch(match, 4, []int{1, 3}, func(i int) bool { return i%3 == 2 })
 
-			return ParseBodyResult{
+			return _ParseBodyResult{
 				Body:    body,
 				Message: trimString(match[0]),
 				Email:   trimString(email),
@@ -54,19 +54,19 @@ func ParseBody(body string, forwarded bool) ParseBodyResult {
 		}
 	}
 
-	return ParseBodyResult{}
+	return _ParseBodyResult{}
 }
 
-func ParseOriginalBody(text string) string {
+func _ParseOriginalBody(text string) string {
 	regexeses := [][]*regexp.Regexp{
-		OriginalSubject,
-		OriginalCC,
-		OriginalTo,
-		OriginalReplyTo,
+		_OriginalSubject,
+		_OriginalCC,
+		_OriginalTo,
+		_OriginalReplyTo,
 	}
 
 	for _, regexes := range regexeses {
-		match := LoopRegexesSplit(regexes, text, true)
+		match := _LoopRegexesSplit(regexes, text, true)
 
 		if len(match) > 2 && strings.HasPrefix(match[3], "\n\n") {
 			body := reconciliateSplitMatch(match, 4, []int{3}, func(i int) bool { return i%3 == 2 })
@@ -75,7 +75,7 @@ func ParseOriginalBody(text string) string {
 		}
 	}
 
-	match := LoopRegexesSplit(append(OriginalSubject, OriginalSubjectLax...), text, true)
+	match := _LoopRegexesSplit(append(_OriginalSubject, _OriginalSubjectLax...), text, true)
 
 	if len(match) > 3 {
 		body := reconciliateSplitMatch(match, 4, []int{3}, func(i int) bool { return i%3 == 2 })
@@ -86,40 +86,40 @@ func ParseOriginalBody(text string) string {
 	return text
 }
 
-type ParseOriginalEmailResult struct {
+type _ParseOriginalEmailResult struct {
 	Body string
 
-	From MailboxResult
-	To   []MailboxResult
-	CC   []MailboxResult
+	From _MailboxResult
+	To   []_MailboxResult
+	CC   []_MailboxResult
 
 	Subject string
 	Date    string
 }
 
-func ParseOriginalEmail(text string, body string) ParseOriginalEmailResult {
-	text = ByteOrderMark.ReplaceAllString(text, "")
-	text = QuoteLineBreak.ReplaceAllString(text, "")
-	text = Quote.ReplaceAllString(text, "")
-	text = FourSpaces.ReplaceAllString(text, "")
+func _ParseOriginalEmail(text string, body string) _ParseOriginalEmailResult {
+	text = _ByteOrderMark.ReplaceAllString(text, "")
+	text = _QuoteLineBreak.ReplaceAllString(text, "")
+	text = _Quote.ReplaceAllString(text, "")
+	text = _FourSpaces.ReplaceAllString(text, "")
 
-	return ParseOriginalEmailResult{
-		Body: ParseOriginalBody(text),
+	return _ParseOriginalEmailResult{
+		Body: _ParseOriginalBody(text),
 
-		From: ParseOriginalFrom(text, body),
-		To:   ParseOriginalTo(text),
-		CC:   ParseOriginalCC(text),
+		From: _ParseOriginalFrom(text, body),
+		To:   _ParseOriginalTo(text),
+		CC:   _ParseOriginalCC(text),
 
-		Subject: ParseOriginalSubject(text),
-		Date:    ParseOriginalDate(text, body),
+		Subject: _ParseOriginalSubject(text),
+		Date:    _ParseOriginalDate(text, body),
 	}
 }
 
-func ParseOriginalFrom(text string, body string) MailboxResult {
+func _ParseOriginalFrom(text string, body string) _MailboxResult {
 	var name string
 	var address string
 
-	authors := ParseMailbox(OriginalFrom, text)
+	authors := _ParseMailbox(_OriginalFrom, text)
 
 	if len(authors) > 0 {
 		author := authors[0]
@@ -129,61 +129,61 @@ func ParseOriginalFrom(text string, body string) MailboxResult {
 		}
 	}
 
-	match, pattern := LoopRegexesMatch(SeparatorWithInformation, body, true)
+	match, pattern := _LoopRegexesMatch(_SeparatorWithInformation, body, true)
 
 	if len(match) == 4 {
 		namedMatches := findNamedMatches(pattern, body)
 
-		return PrepareMailbox(namedMatches["from_name"], namedMatches["from_address"])
+		return _PrepareMailbox(namedMatches["from_name"], namedMatches["from_address"])
 	}
 
-	match, _ = LoopRegexesMatch(OriginalFromLax, text, true)
+	match, _ = _LoopRegexesMatch(_OriginalFromLax, text, true)
 
 	if len(match) > 1 {
 		name = match[2]
 		address = match[3]
 
-		return PrepareMailbox(name, address)
+		return _PrepareMailbox(name, address)
 	}
 
-	return PrepareMailbox("", "")
+	return _PrepareMailbox("", "")
 }
 
-func ParseOriginalTo(text string) []MailboxResult {
-	recipients := ParseMailbox(OriginalTo, text)
+func _ParseOriginalTo(text string) []_MailboxResult {
+	recipients := _ParseMailbox(_OriginalTo, text)
 
 	if len(recipients) > 0 {
 		return recipients
 	}
 
-	text = LoopRegexesReplace(OriginalSubjectLax, text)
-	text = LoopRegexesReplace(OriginalDateLax, text)
-	text = LoopRegexesReplace(OriginalCCLax, text)
+	text = _LoopRegexesReplace(_OriginalSubjectLax, text)
+	text = _LoopRegexesReplace(_OriginalDateLax, text)
+	text = _LoopRegexesReplace(_OriginalCCLax, text)
 
-	return ParseMailbox(OriginalToLax, text)
+	return _ParseMailbox(_OriginalToLax, text)
 }
 
-func ParseOriginalCC(text string) []MailboxResult {
-	recipients := ParseMailbox(OriginalCC, text)
+func _ParseOriginalCC(text string) []_MailboxResult {
+	recipients := _ParseMailbox(_OriginalCC, text)
 
 	if len(recipients) > 0 {
 		return recipients
 	}
 
-	text = LoopRegexesReplace(OriginalSubjectLax, text)
-	text = LoopRegexesReplace(OriginalDateLax, text)
+	text = _LoopRegexesReplace(_OriginalSubjectLax, text)
+	text = _LoopRegexesReplace(_OriginalDateLax, text)
 
-	return ParseMailbox(OriginalCCLax, text)
+	return _ParseMailbox(_OriginalCCLax, text)
 }
 
-func ParseOriginalSubject(text string) string {
-	match, _ := LoopRegexesMatch(OriginalSubject, text, true)
+func _ParseOriginalSubject(text string) string {
+	match, _ := _LoopRegexesMatch(_OriginalSubject, text, true)
 
 	if len(match) > 0 {
 		return trimString(match[1])
 	}
 
-	match, _ = LoopRegexesMatch(OriginalSubjectLax, text, true)
+	match, _ = _LoopRegexesMatch(_OriginalSubjectLax, text, true)
 
 	if len(match) > 0 {
 		return trimString(match[1])
@@ -192,14 +192,14 @@ func ParseOriginalSubject(text string) string {
 	return ""
 }
 
-func ParseOriginalDate(text string, body string) string {
-	match, _ := LoopRegexesMatch(OriginalDate, text, true)
+func _ParseOriginalDate(text string, body string) string {
+	match, _ := _LoopRegexesMatch(_OriginalDate, text, true)
 
 	if len(match) > 0 {
 		return trimString(match[1])
 	}
 
-	match, pattern := LoopRegexesMatch(SeparatorWithInformation, body, true)
+	match, pattern := _LoopRegexesMatch(_SeparatorWithInformation, body, true)
 
 	if len(match) == 4 {
 		namedMatches := findNamedMatches(pattern, body)
@@ -207,8 +207,8 @@ func ParseOriginalDate(text string, body string) string {
 		return trimString(namedMatches["date"])
 	}
 
-	text = LoopRegexesReplace(OriginalSubjectLax, text)
-	match, _ = LoopRegexesMatch(OriginalDateLax, text, true)
+	text = _LoopRegexesReplace(_OriginalSubjectLax, text)
+	match, _ = _LoopRegexesMatch(_OriginalDateLax, text, true)
 
 	if len(match) > 0 {
 		return trimString(match[1])
@@ -217,17 +217,17 @@ func ParseOriginalDate(text string, body string) string {
 	return ""
 }
 
-func ParseMailbox(regexes []*regexp.Regexp, text string) []MailboxResult {
-	match, _ := LoopRegexesMatch(regexes, text, true)
+func _ParseMailbox(regexes []*regexp.Regexp, text string) []_MailboxResult {
+	match, _ := _LoopRegexesMatch(regexes, text, true)
 
 	if len(match) > 0 {
 		mailboxesLine := trimString(match[len(match)-1])
 
 		if len(mailboxesLine) > 0 {
-			mailboxes := []MailboxResult{}
+			mailboxes := []_MailboxResult{}
 
 			for len(mailboxesLine) > 0 {
-				mailboxMatch, _ := LoopRegexesMatch(Mailbox, mailboxesLine, true)
+				mailboxMatch, _ := _LoopRegexesMatch(_Mailbox, mailboxesLine, true)
 
 				if len(mailboxMatch) > 0 {
 					var name string
@@ -240,12 +240,12 @@ func ParseMailbox(regexes []*regexp.Regexp, text string) []MailboxResult {
 						address = mailboxMatch[1]
 					}
 
-					mailboxes = append(mailboxes, PrepareMailbox(name, address))
+					mailboxes = append(mailboxes, _PrepareMailbox(name, address))
 
 					mailboxesLine = trimString(strings.Replace(mailboxesLine, mailboxMatch[0], "", 1))
 
 					if len(mailboxesLine) > 0 {
-						for _, separator := range MailboxesSeparators {
+						for _, separator := range _MailboxesSeparators {
 							if separator == string(mailboxesLine[0]) {
 								mailboxesLine = trimString(mailboxesLine[1:])
 								break
@@ -253,7 +253,7 @@ func ParseMailbox(regexes []*regexp.Regexp, text string) []MailboxResult {
 						}
 					}
 				} else {
-					mailboxes = append(mailboxes, PrepareMailbox("", mailboxesLine))
+					mailboxes = append(mailboxes, _PrepareMailbox("", mailboxesLine))
 
 					mailboxesLine = ""
 				}
@@ -263,19 +263,19 @@ func ParseMailbox(regexes []*regexp.Regexp, text string) []MailboxResult {
 		}
 	}
 
-	return []MailboxResult{}
+	return []_MailboxResult{}
 }
 
-type MailboxResult struct {
+type _MailboxResult struct {
 	Name    string
 	Address string
 }
 
-func PrepareMailbox(name string, address string) MailboxResult {
+func _PrepareMailbox(name string, address string) _MailboxResult {
 	name = trimString(name)
 	address = trimString(address)
 
-	match, _ := LoopRegexesMatch(MailboxAddress, address, true)
+	match, _ := _LoopRegexesMatch(_MailboxAddress, address, true)
 
 	if len(match) == 0 {
 		name = address
@@ -286,17 +286,17 @@ func PrepareMailbox(name string, address string) MailboxResult {
 		name = ""
 	}
 
-	return MailboxResult{
+	return _MailboxResult{
 		Name:    name,
 		Address: address,
 	}
 }
 
-type ReadEmailResult struct {
+type ReadResultEmail struct {
 	Body    string
-	From    MailboxResult
-	To      []MailboxResult
-	CC      []MailboxResult
+	From    _MailboxResult
+	To      []_MailboxResult
+	CC      []_MailboxResult
 	Subject string
 	Date    string
 }
@@ -304,18 +304,18 @@ type ReadEmailResult struct {
 type ReadResult struct {
 	Forwarded bool
 	Message   string
-	Email     ReadEmailResult
+	Email     ReadResultEmail
 }
 
 func Read(body string, subject string) ReadResult {
-	email := ParseOriginalEmailResult{}
+	email := _ParseOriginalEmailResult{}
 	forwarded := false
-	bodyResult := ParseBodyResult{}
+	bodyResult := _ParseBodyResult{}
 	parsedSubject := ""
 
 	if len(subject) > 0 {
 		subject = preprocessString(strings.Clone(subject))
-		parsedSubject = ParseSubject(subject)
+		parsedSubject = _ParseSubject(subject)
 
 		if len(parsedSubject) > 0 {
 			forwarded = true
@@ -324,12 +324,12 @@ func Read(body string, subject string) ReadResult {
 
 	if len(subject) == 0 || forwarded {
 		body = preprocessString(strings.Clone(body))
-		bodyResult = ParseBody(body, forwarded)
+		bodyResult = _ParseBody(body, forwarded)
 
 		if len(bodyResult.Email) > 0 {
 			forwarded = true
 
-			email = ParseOriginalEmail(bodyResult.Email, bodyResult.Body)
+			email = _ParseOriginalEmail(bodyResult.Email, bodyResult.Body)
 		}
 	}
 
@@ -346,7 +346,7 @@ func Read(body string, subject string) ReadResult {
 
 		Message: bodyResult.Message,
 
-		Email: ReadEmailResult{
+		Email: ReadResultEmail{
 			Body:    email.Body,
 			From:    email.From,
 			To:      email.To,

@@ -10,22 +10,22 @@ import (
 	regexp "github.com/wasilibs/go-re2"
 )
 
-var _Subject = "Integer consequat non purus"
-var _Body = "Aenean quis diam urna. Maecenas eleifend vulputate ligula ac consequat. Pellentesque cursus tincidunt mauris non venenatis.\nSed nec facilisis tellus. Nunc eget eros quis ex congue iaculis nec quis massa. Morbi in nisi tincidunt, euismod ante eget, eleifend nisi.\n\nPraesent ac ligula orci. Pellentesque convallis suscipit mi, at congue massa sagittis eget."
-var _Message = "Praesent suscipit egestas hendrerit.\n\nAliquam eget dui dui."
+var _TestSubject = "Integer consequat non purus"
+var _TestBody = "Aenean quis diam urna. Maecenas eleifend vulputate ligula ac consequat. Pellentesque cursus tincidunt mauris non venenatis.\nSed nec facilisis tellus. Nunc eget eros quis ex congue iaculis nec quis massa. Morbi in nisi tincidunt, euismod ante eget, eleifend nisi.\n\nPraesent ac ligula orci. Pellentesque convallis suscipit mi, at congue massa sagittis eget."
+var _TestMessage = "Praesent suscipit egestas hendrerit.\n\nAliquam eget dui dui."
 
-var _FromAddress = "john.doe@acme.com"
-var _FromName = "John Doe"
+var _TestFromAddress = "john.doe@acme.com"
+var _TestFromName = "John Doe"
 
-var _ToAddress1 = "bessie.berry@acme.com"
-var _ToName1 = "Bessie Berry"
-var _ToAddress2 = "suzanne@globex.corp"
-var _ToName2 = "Suzanne"
+var _TestToAddress1 = "bessie.berry@acme.com"
+var _TestToName1 = "Bessie Berry"
+var _TestToAddress2 = "suzanne@globex.corp"
+var _TestToName2 = "Suzanne"
 
-var _CcAddress1 = "walter.sheltan@acme.com"
-var _CcName1 = "Walter Sheltan"
-var _CcAddress2 = "nicholas@globex.corp"
-var _CcName2 = "Nicholas"
+var _TestCcAddress1 = "walter.sheltan@acme.com"
+var _TestCcName1 = "Walter Sheltan"
+var _TestCcAddress2 = "nicholas@globex.corp"
+var _TestCcName2 = "Nicholas"
 
 func _Read(emailFile string, subjectFile string) (string, string) {
 	var email string
@@ -80,12 +80,12 @@ func _TestEmail(t *testing.T, result ReadResult, entryName string, skipFrom bool
 		t.Error(entryName, "result.Forwarded != true", result.Forwarded)
 	}
 
-	if result.Email.Subject != _Subject {
-		t.Error(entryName, "result.Email.Subject != _Subject, result.Email.Subject=", result.Email.Subject, "_Subject=", _Subject)
+	if result.Email.Subject != _TestSubject {
+		t.Error(entryName, "result.Email.Subject != _TestSubject, result.Email.Subject=", result.Email.Subject, "_TestSubject=", _TestSubject)
 	}
 
 	if !skipBody {
-		if result.Email.Body != _Body {
+		if result.Email.Body != _TestBody {
 			t.Error(entryName, "result.Email.Body != _Body", result.Email.Body)
 		}
 	}
@@ -99,12 +99,12 @@ func _TestEmail(t *testing.T, result ReadResult, entryName string, skipFrom bool
 	}
 
 	if !skipFrom {
-		if result.Email.From.Name != _FromName {
-			t.Error(entryName, "result.Email.From.Name != _FromName", result.Email.From.Name, _FromName)
+		if result.Email.From.Name != _TestFromName {
+			t.Error(entryName, "result.Email.From.Name != _TestFromName", result.Email.From.Name, _TestFromName)
 		}
 
-		if result.Email.From.Address != _FromAddress {
-			t.Error(entryName, "result.Email.From.Address != _FromAddress", result.Email.From.Address, _FromAddress)
+		if result.Email.From.Address != _TestFromAddress {
+			t.Error(entryName, "result.Email.From.Address != _TestFromAddress", result.Email.From.Address, _TestFromAddress)
 		}
 	}
 
@@ -114,39 +114,39 @@ func _TestEmail(t *testing.T, result ReadResult, entryName string, skipFrom bool
 				t.Error(entryName, "len(result.Email.To[0].Name) > 0")
 			}
 
-			if result.Email.To[0].Address != _ToAddress1 {
-				t.Error(entryName, "result.Email.To[0].Address != _ToAddress1")
+			if result.Email.To[0].Address != _TestToAddress1 {
+				t.Error(entryName, "result.Email.To[0].Address != _TestToAddress1")
 			}
 		} else {
-			t.Error(entryName, "len(result.Email.To) == 0, expected", _ToName1, _ToAddress1)
+			t.Error(entryName, "len(result.Email.To) == 0, expected", _TestToName1, _TestToAddress1)
 		}
 	}
 
 	if !skipCc {
 		if len(result.Email.CC) > 0 {
-			if result.Email.CC[0].Name != _CcName1 {
-				t.Error(entryName, "result.Email.CC[0].Name != _CcName1")
+			if result.Email.CC[0].Name != _TestCcName1 {
+				t.Error(entryName, "result.Email.CC[0].Name != _TestCcName1")
 			}
 
-			if result.Email.CC[0].Address != _CcAddress1 {
-				t.Error(entryName, "result.Email.CC[0].Address != _CcAddress1")
+			if result.Email.CC[0].Address != _TestCcAddress1 {
+				t.Error(entryName, "result.Email.CC[0].Address != _TestCcAddress1")
 			}
 
-			if result.Email.CC[1].Name != _CcName2 {
-				t.Error(entryName, "result.Email.CC[1].Name != _CcName2")
+			if result.Email.CC[1].Name != _TestCcName2 {
+				t.Error(entryName, "result.Email.CC[1].Name != _TestCcName2")
 			}
 
-			if result.Email.CC[1].Address != _CcAddress2 {
-				t.Error(entryName, "result.Email.CC[1].Address != _CcAddress2")
+			if result.Email.CC[1].Address != _TestCcAddress2 {
+				t.Error(entryName, "result.Email.CC[1].Address != _TestCcAddress2")
 			}
 		} else {
-			t.Error(entryName, "len(result.Email.CC) == 0, expected", _CcName1, _CcAddress1, _CcName2, _CcAddress2)
+			t.Error(entryName, "len(result.Email.CC) == 0, expected", _TestCcName1, _TestCcAddress1, _TestCcName2, _TestCcAddress2)
 		}
 	}
 
 	if !skipMessage {
-		if result.Message != _Message {
-			t.Error(entryName, "result.Message != _Message")
+		if result.Message != _TestMessage {
+			t.Error(entryName, "result.Message != _TestMessage")
 		}
 	}
 }
@@ -339,7 +339,7 @@ func TestAlternative1(t *testing.T) {
 			t.Error(entryName)
 		}
 
-		if result.Email.To[0].Address != _ToAddress1 {
+		if result.Email.To[0].Address != _TestToAddress1 {
 			t.Error(entryName)
 		}
 
@@ -347,7 +347,7 @@ func TestAlternative1(t *testing.T) {
 			t.Error(entryName)
 		}
 
-		if result.Email.To[1].Address != _ToAddress2 {
+		if result.Email.To[1].Address != _TestToAddress2 {
 			t.Error(entryName)
 		}
 
@@ -375,11 +375,11 @@ func TestAlternative2(t *testing.T) {
 		switch entryName {
 		case "outlook_2019_en_body_alt_2":
 		default:
-			if result.Email.To[0].Address != _ToAddress1 {
+			if result.Email.To[0].Address != _TestToAddress1 {
 				t.Error(entryName)
 			}
 
-			if result.Email.To[1].Address != _ToAddress2 {
+			if result.Email.To[1].Address != _TestToAddress2 {
 				t.Error(entryName)
 			}
 		}
@@ -398,11 +398,11 @@ func TestAlternative3(t *testing.T) {
 	}, func(result ReadResult, entryName string) {
 		_TestEmail(t, result, entryName, false, true, true, true, false)
 
-		if result.Email.To[0].Name != _ToName1 {
+		if result.Email.To[0].Name != _TestToName1 {
 			t.Error(entryName)
 		}
 
-		if result.Email.To[0].Address != _ToAddress1 {
+		if result.Email.To[0].Address != _TestToAddress1 {
 			t.Error(entryName)
 		}
 
@@ -410,7 +410,7 @@ func TestAlternative3(t *testing.T) {
 			t.Error(entryName)
 		}
 
-		if result.Email.To[1].Address != _ToAddress2 {
+		if result.Email.To[1].Address != _TestToAddress2 {
 			t.Error(entryName)
 		}
 
@@ -418,15 +418,15 @@ func TestAlternative3(t *testing.T) {
 			t.Error(entryName)
 		}
 
-		if result.Email.CC[0].Address != _CcAddress1 {
+		if result.Email.CC[0].Address != _TestCcAddress1 {
 			t.Error(entryName)
 		}
 
-		if result.Email.CC[1].Name != _CcName2 {
+		if result.Email.CC[1].Name != _TestCcName2 {
 			t.Error(entryName)
 		}
 
-		if result.Email.CC[1].Address != _CcAddress2 {
+		if result.Email.CC[1].Address != _TestCcAddress2 {
 			t.Error(entryName)
 		}
 	})
@@ -460,7 +460,7 @@ func TestAlternative5(t *testing.T) {
 			t.Error(entryName)
 		}
 
-		if result.Email.From.Address != _FromAddress {
+		if result.Email.From.Address != _TestFromAddress {
 			t.Error(entryName)
 		}
 	})
@@ -484,15 +484,15 @@ func TestAlternative7(t *testing.T) {
 			t.Error(entryName)
 		}
 
-		if result.Email.To[0].Address != _ToAddress1 {
+		if result.Email.To[0].Address != _TestToAddress1 {
 			t.Error(entryName)
 		}
 
-		if result.Email.To[1].Name != _ToName2 {
+		if result.Email.To[1].Name != _TestToName2 {
 			t.Error(entryName)
 		}
 
-		if result.Email.To[1].Address != _ToAddress2 {
+		if result.Email.To[1].Address != _TestToAddress2 {
 			t.Error(entryName)
 		}
 
@@ -500,7 +500,7 @@ func TestAlternative7(t *testing.T) {
 			t.Error(entryName)
 		}
 
-		if result.Email.CC[0].Address != _CcAddress1 {
+		if result.Email.CC[0].Address != _TestCcAddress1 {
 			t.Error(entryName)
 		}
 
@@ -508,7 +508,7 @@ func TestAlternative7(t *testing.T) {
 			t.Error(entryName)
 		}
 
-		if result.Email.CC[1].Address != _CcAddress2 {
+		if result.Email.CC[1].Address != _TestCcAddress2 {
 			t.Error(entryName)
 		}
 	})
@@ -521,7 +521,7 @@ func TestAlternative8(t *testing.T) {
 		_TestEmail(t, result, entryName, false, false, false, false, true)
 
 		email, _ := _Read(entryName, "")
-		separator := fmt.Sprintf("Subject: %s\n", _Subject)
+		separator := fmt.Sprintf("Subject: %s\n", _TestSubject)
 
 		body := trimString(strings.Split(email, separator)[1])
 
@@ -557,7 +557,7 @@ func TestAlternative11(t *testing.T) {
 			t.Error(entryName)
 		}
 
-		if result.Email.From.Address != _FromAddress {
+		if result.Email.From.Address != _TestFromAddress {
 			t.Error(entryName)
 		}
 
@@ -565,7 +565,7 @@ func TestAlternative11(t *testing.T) {
 			t.Error(entryName)
 		}
 
-		if result.Email.To[0].Address != _ToAddress1 {
+		if result.Email.To[0].Address != _TestToAddress1 {
 			t.Error(entryName)
 		}
 
@@ -573,7 +573,7 @@ func TestAlternative11(t *testing.T) {
 			t.Error(entryName)
 		}
 
-		if result.Email.To[1].Address != _ToAddress2 {
+		if result.Email.To[1].Address != _TestToAddress2 {
 			t.Error(entryName)
 		}
 
@@ -581,7 +581,7 @@ func TestAlternative11(t *testing.T) {
 			t.Error(entryName)
 		}
 
-		if result.Email.CC[0].Address != _CcAddress1 {
+		if result.Email.CC[0].Address != _TestCcAddress1 {
 			t.Error(entryName)
 		}
 
@@ -589,7 +589,7 @@ func TestAlternative11(t *testing.T) {
 			t.Error(entryName)
 		}
 
-		if result.Email.CC[1].Address != _CcAddress2 {
+		if result.Email.CC[1].Address != _TestCcAddress2 {
 			t.Error(entryName)
 		}
 	})
@@ -601,7 +601,7 @@ func TestAlternative12(t *testing.T) {
 	}, func(result ReadResult, entryName string) {
 		_TestEmail(t, result, entryName, true, true, true, true, false)
 
-		if result.Email.From.Name != _FromName {
+		if result.Email.From.Name != _TestFromName {
 			t.Error(entryName)
 		}
 
@@ -609,7 +609,7 @@ func TestAlternative12(t *testing.T) {
 			t.Error(entryName)
 		}
 
-		if result.Email.To[0].Name != _ToName1 {
+		if result.Email.To[0].Name != _TestToName1 {
 			t.Error(entryName)
 		}
 
@@ -626,7 +626,7 @@ func TestAlternative13(t *testing.T) {
 		_TestEmail(t, result, entryName, false, false, false, false, true)
 
 		email, _ := _Read(entryName, "")
-		separator := fmt.Sprintf("Subject: %s\n", _Subject)
+		separator := fmt.Sprintf("Subject: %s\n", _TestSubject)
 
 		body := strings.Split(email, separator)[1]
 
@@ -638,7 +638,7 @@ func TestAlternative13(t *testing.T) {
 			t.Error(entryName)
 		}
 
-		if !strings.HasPrefix(result.Email.Body, _Body) {
+		if !strings.HasPrefix(result.Email.Body, _TestBody) {
 			t.Error(entryName)
 		}
 	})
@@ -655,11 +655,11 @@ func TestAlternative14(t *testing.T) {
 		_TestEmail(t, result, entryName, false, false, false, false, true)
 
 		email, _ := _Read(entryName, "")
-		separator := fmt.Sprintf("Subject: %s\n", _Subject)
+		separator := fmt.Sprintf("Subject: %s\n", _TestSubject)
 
 		switch entryName {
 		case "thunderbird_en_body_alt_14":
-			separator = fmt.Sprintf("CC: 	%s <%s>, %s <%s>\n", _CcName1, _CcAddress1, _CcName2, _CcAddress2)
+			separator = fmt.Sprintf("CC: 	%s <%s>, %s <%s>\n", _TestCcName1, _TestCcAddress1, _TestCcName2, _TestCcAddress2)
 		}
 
 		body := strings.Split(email, separator)[1]
@@ -681,11 +681,11 @@ func TestAlternative15(t *testing.T) {
 		_TestEmail(t, result, entryName, false, false, false, false, true)
 
 		email, _ := _Read(entryName, "")
-		separator := fmt.Sprintf("Subject: %s\n", _Subject)
+		separator := fmt.Sprintf("Subject: %s\n", _TestSubject)
 
 		switch entryName {
 		case "thunderbird_en_body_alt_15":
-			separator = fmt.Sprintf("CC: 	%s <%s>, %s <%s>\n", _CcName1, _CcAddress1, _CcName2, _CcAddress2)
+			separator = fmt.Sprintf("CC: 	%s <%s>, %s <%s>\n", _TestCcName1, _TestCcAddress1, _TestCcName2, _TestCcAddress2)
 		}
 
 		body := strings.Split(email, separator)[1]

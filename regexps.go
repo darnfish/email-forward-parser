@@ -4,22 +4,22 @@ import (
 	regexp "github.com/wasilibs/go-re2"
 )
 
-var MailboxesSeparators = []string{
+var _MailboxesSeparators = []string{
 	",",
 	";",
 }
 
 var (
-	QuoteLineBreak           = regexp.MustCompile(`(?m)^(>+)\s?$`)
-	Quote                    = regexp.MustCompile(`(?m)^(>+)\s?`)
-	FourSpaces               = regexp.MustCompile(`(?m)^(\ {4})\s?`)
-	CarriageReturn           = regexp.MustCompile(`(?m)\r\n`)
-	ByteOrderMark            = regexp.MustCompile(`(?m)\xFEFF`)
-	TrailingNonBreakingSpace = regexp.MustCompile(`(?m)\xA0$`)
-	NonBreakingSpace         = regexp.MustCompile(`(?m)\xA0`)
+	_QuoteLineBreak           = regexp.MustCompile(`(?m)^(>+)\s?$`)
+	_Quote                    = regexp.MustCompile(`(?m)^(>+)\s?`)
+	_FourSpaces               = regexp.MustCompile(`(?m)^(\ {4})\s?`)
+	_CarriageReturn           = regexp.MustCompile(`(?m)\r\n`)
+	_ByteOrderMark            = regexp.MustCompile(`(?m)\xFEFF`)
+	_TrailingNonBreakingSpace = regexp.MustCompile(`(?m)\xA0$`)
+	_NonBreakingSpace         = regexp.MustCompile(`(?m)\xA0`)
 )
 
-var Subject = []*regexp.Regexp{
+var _Subject = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)^Fw:(.*)`),         // Outlook Live / 365 (cs, en, hr, hu, sk), Yahoo Mail (all locales)
 	regexp.MustCompile(`(?m)^VS:(.*)`),         // Outlook Live / 365 (da), New Outlook 2019 (da)
 	regexp.MustCompile(`(?m)^WG:(.*)`),         // Outlook Live / 365 (de), New Outlook 2019 (de)
@@ -38,7 +38,7 @@ var Subject = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)^Fwd:(.*)`),        // Gmail (all locales), Thunderbird (all locales), Missive (en)
 }
 
-var Separator = []*regexp.Regexp{
+var _Separator = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)^>?\s*Begin forwarded message\s?:`),                             // Apple Mail (en)
 	regexp.MustCompile(`(?m)^>?\s*Začátek přeposílané zprávy\s?:`),                          // Apple Mail (cs)
 	regexp.MustCompile(`(?m)^>?\s*Start på videresendt besked\s?:`),                         // Apple Mail (da)
@@ -114,7 +114,7 @@ var Separator = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)^>?\s*-{10} Original Message -{10}\s*`),                         // IONOS by 1 & 1 (en)
 }
 
-var SeparatorWithInformation = []*regexp.Regexp{
+var _SeparatorWithInformation = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)^\s?Dne\s?(?P<date>.+)\,\s?(?P<from_name>.+)\s*[\[|<](?P<from_address>.+)[\]|>]\s?napsal\(a\)\s?:`),        // Outlook 2019 (cz)
 	regexp.MustCompile(`(?m)^\s?D.\s?(?P<date>.+)\s?skrev\s?\"(?P<from_name>.+)\"\s*[\[|<](?P<from_address>.+)[\]|>]\s?:`),             // Outlook 2019 (da)
 	regexp.MustCompile(`(?m)^\s?Am\s?(?P<date>.+)\s?schrieb\s?\"(?P<from_name>.+)\"\s*[\[|<](?P<from_address>.+)[\]|>]\s?:`),           // Outlook 2019 (de)
@@ -134,7 +134,7 @@ var SeparatorWithInformation = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)^\s?\"(?P<from_name>.+)\"\s*[\[|<](?P<from_address>.+)[\]|>]\,\s?(?P<date>.+)\s?tarihinde şunu yazdı\s?:`), // Outlook 2019 (tr)
 }
 
-var OriginalSubject = []*regexp.Regexp{
+var _OriginalSubject = []*regexp.Regexp{
 	regexp.MustCompile(`(?im)^\*?Subject\s?:\*?(.+)`), // Apple Mail (en), Gmail (all locales), Outlook Live / 365 (all locales), New Outlook 2019 (en), Thunderbird (da, en), Missive (en), HubSpot (en)
 	regexp.MustCompile(`(?im)^Předmět\s?:(.+)`),       // Apple Mail (cs), New Outlook 2019 (cs), Thunderbird (cs)
 	regexp.MustCompile(`(?im)^Emne\s?:(.+)`),          // Apple Mail (da, no), New Outlook 2019 (da), Thunderbird (no)
@@ -157,7 +157,7 @@ var OriginalSubject = []*regexp.Regexp{
 	regexp.MustCompile(`(?im)^件名：(.+)`),               // HubSpot (ja)
 }
 
-var OriginalSubjectLax = []*regexp.Regexp{
+var _OriginalSubjectLax = []*regexp.Regexp{
 	regexp.MustCompile(`(?i)Subject\s?:(.+)`),   // Yahoo Mail (en)
 	regexp.MustCompile(`(?i)Emne\s?:(.+)`),      // Yahoo Mail (da, no)
 	regexp.MustCompile(`(?i)Předmět\s?:(.+)`),   // Yahoo Mail (cs)
@@ -177,7 +177,7 @@ var OriginalSubjectLax = []*regexp.Regexp{
 	regexp.MustCompile(`(?i)Konu\s?:(.+)`),      // Yahoo Mail (tr)
 }
 
-var OriginalFrom = []*regexp.Regexp{
+var _OriginalFrom = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)^(\*?\s*From\s?:\*?(.+))$`),  // Apple Mail (en), Outlook Live / 365 (all locales), New Outlook 2019 (en), Thunderbird (da, en), Missive (en), HubSpot (en)
 	regexp.MustCompile(`(?m)^(\s*Od\s?:(.+))$`),          // Apple Mail (cs, pl, sk), Gmail (cs, pl, sk), New Outlook 2019 (cs, pl, sk), Thunderbird (cs, sk), HubSpot (pl)
 	regexp.MustCompile(`(?m)^(\s*Fra\s?:(.+))$`),         // Apple Mail (da, no), Gmail (da, no), New Outlook 2019 (da), Thunderbird (no)
@@ -204,7 +204,7 @@ var OriginalFrom = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)^(\s*送信元：(.+))$`),            // HubSpot (ja)
 }
 
-var OriginalFromLax = []*regexp.Regexp{
+var _OriginalFromLax = []*regexp.Regexp{
 	regexp.MustCompile(`(\s*From\s?:(.+?)\s?\n?\s*[\[|<](.+?)[\]|>])`),      // Yahoo Mail (en)
 	regexp.MustCompile(`(\s*Od\s?:(.+?)\s?\n?\s*[\[|<](.+?)[\]|>])`),        // Yahoo Mail (cs, pl, sk)
 	regexp.MustCompile(`(\s*Fra\s?:(.+?)\s?\n?\s*[\[|<](.+?)[\]|>])`),       // Yahoo Mail (da, no)
@@ -221,7 +221,7 @@ var OriginalFromLax = []*regexp.Regexp{
 	regexp.MustCompile(`(\s*Від\s?:(.+?)\s?\n?\s*[\[|<](.+?)[\]|>])`),       // Yahoo Mail (uk)
 }
 
-var OriginalTo = []*regexp.Regexp{
+var _OriginalTo = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)^\*?\s*To\s?:\*?(.+)$`),      //Apple Mail (en), Gmail (all locales), Outlook Live / 365 (all locales), Thunderbird (da, en), Missive (en), HubSpot (en)
 	regexp.MustCompile(`(?m)^\s*Komu\s?:(.+)$`),          //Apple Mail (cs), New Outlook 2019 (cs, sk), Thunderbird (cs)
 	regexp.MustCompile(`(?m)^\s*Til\s?:(.+)$`),           //Apple Mail (da, no), New Outlook 2019 (da), Thunderbird (no)
@@ -244,7 +244,7 @@ var OriginalTo = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)^\s*送信先：(.+)$`),              // HubSpot (ja)
 }
 
-var OriginalToLax = []*regexp.Regexp{
+var _OriginalToLax = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)\s*To\s?:(.+)$`),            // Yahook Mail (en)
 	regexp.MustCompile(`(?m)\s*Komu\s?:(.+)$`),          // Yahook Mail (cs, sk)
 	regexp.MustCompile(`(?m)\s*Til\s?:(.+)$`),           // Yahook Mail (da, no, sv)
@@ -262,7 +262,7 @@ var OriginalToLax = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)\s*Kime\s?:(.+)$`),          // Yahook Mail (tr)
 }
 
-var OriginalReplyTo = []*regexp.Regexp{
+var _OriginalReplyTo = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)^\s*Reply-To\s?:(.+)$`),        // Apple Mail (en)
 	regexp.MustCompile(`(?m)^\s*Odgovori na\s?:(.+)$`),     // Apple Mail (hr)
 	regexp.MustCompile(`(?m)^\s*Odpověď na\s?:(.+)$`),      // Apple Mail (cs)
@@ -285,7 +285,7 @@ var OriginalReplyTo = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)^\s*Кому відповісти\s?:(.+)$`), // Apple Mail (uk)
 }
 
-var OriginalCC = []*regexp.Regexp{
+var _OriginalCC = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)^\*?\s*Cc\s?:\*?(.+)$`),      // Apple Mail (en, da, es, fr, hr, it, pt, pt-br, ro, sk), Gmail (all locales), Outlook Live / 365 (all locales), New Outlook 2019 (da, de, en, fr, it, pt-br), Missive (en), HubSpot (de, en, es, it, nl, pt-br)
 	regexp.MustCompile(`(?m)^\s*CC\s?:(.+)$`),            // New Outlook 2019 (es, nl, pt), Thunderbird (da, en, es, fi, hr, hu, it, nl, no, pt, pt-br, ro, tr, uk)
 	regexp.MustCompile(`(?m)^\s*Kopie\s?:(.+)$`),         // Apple Mail (cs, de, nl), New Outlook 2019 (cs), Thunderbird (cs)
@@ -305,7 +305,7 @@ var OriginalCC = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)^\s*CC：(.+)$`),               // HubSpot (ja)}
 }
 
-var OriginalCCLax = []*regexp.Regexp{
+var _OriginalCCLax = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)\s*Cc\s?:(.+)$`),      // Yahoo Mail (da, en, it, nl, pt, pt-br, ro, tr)
 	regexp.MustCompile(`(?m)\s*CC\s?:(.+)$`),      // Yahoo Mail (de, es)
 	regexp.MustCompile(`(?m)\s*Kopie\s?:(.+)$`),   // Yahoo Mail (cs)
@@ -319,7 +319,7 @@ var OriginalCCLax = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)\s*Копія\s?:(.+)$`),   // Yahoo Mail (uk)
 }
 
-var OriginalDate = []*regexp.Regexp{
+var _OriginalDate = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)^\s*Date\s?:(.+)$`),       // Apple Mail (en, fr), Gmail (all locales), New Outlook 2019 (en, fr), Thunderbird (da, en, fr), Missive (en), HubSpot (en, fr)
 	regexp.MustCompile(`(?m)^\s*Datum\s?:(.+)$`),      // Apple Mail (cs, de, hr, nl, sv), New Outlook 2019 (cs, de, nl, sv), Thunderbird (cs, de, hr, nl, sv), HubSpot (de, nl, sv)
 	regexp.MustCompile(`(?m)^\s*Dato\s?:(.+)$`),       // Apple Mail (da, no), New Outlook 2019 (da), Thunderbird (no)
@@ -336,7 +336,7 @@ var OriginalDate = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)^\s*日付：(.+)$`),            // HubSpot (ja)
 }
 
-var OriginalDateLax = []*regexp.Regexp{
+var _OriginalDateLax = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)\s*Datum\s?:(.+)$`),       // Yahoo Mail (cs)
 	regexp.MustCompile(`(?m)\s*Sendt\s?:(.+)$`),       // Yahoo Mail (da, no)
 	regexp.MustCompile(`(?m)\s*Gesendet\s?:(.+)$`),    // Yahoo Mail (de)
@@ -356,7 +356,7 @@ var OriginalDateLax = []*regexp.Regexp{
 	regexp.MustCompile(`(?m)\s*Відправлено\s?:(.+)$`), // Yahoo Mail (uk)
 }
 
-var Mailbox = []*regexp.Regexp{
+var _Mailbox = []*regexp.Regexp{
 	regexp.MustCompile(`^\s?\n?\s*<.+?<mailto\:(.+?)>>`),           // "<walter.sheltan@acme.com<mailto:walter.sheltan@acme.com>>"
 	regexp.MustCompile(`^(.+?)\s?\n?\s*<.+?<mailto\:(.+?)>>`),      // "Walter Sheltan <walter.sheltan@acme.com<mailto:walter.sheltan@acme.com>>"
 	regexp.MustCompile(`^(.+?)\s?\n?\s*[\[|<]mailto\:(.+?)[\]|>]`), // "Walter Sheltan <mailto:walter.sheltan@acme.com>" or "Walter Sheltan [mailto:walter.sheltan@acme.com]" or "walter.sheltan@acme.com <mailto:walter.sheltan@acme.com>"
@@ -369,6 +369,6 @@ var Mailbox = []*regexp.Regexp{
 	regexp.MustCompile(`^([^;].+?)\s?\n?\s*[\[|<](.+?)[\]|>]`),     // "Walter, Sheltan <walter.sheltan@acme.com>" or "Walter, Sheltan [walter.sheltan@acme.com]"
 }
 
-var MailboxAddress = []*regexp.Regexp{
+var _MailboxAddress = []*regexp.Regexp{
 	regexp.MustCompile(`^(([^\s@]+)@([^\s@]+)\.([^\s@]+))$`),
 }

@@ -4,7 +4,7 @@ import (
 	regexp "github.com/wasilibs/go-re2"
 )
 
-func LoopRegexesReplace(regexes []*regexp.Regexp, str string) string {
+func _LoopRegexesReplace(regexes []*regexp.Regexp, str string) string {
 	match := str
 
 	for _, re := range regexes {
@@ -19,7 +19,7 @@ func LoopRegexesReplace(regexes []*regexp.Regexp, str string) string {
 	return match
 }
 
-func LoopRegexesSplit(regexes []*regexp.Regexp, str string, highestPosition bool) []string {
+func _LoopRegexesSplit(regexes []*regexp.Regexp, str string, highestPosition bool) []string {
 	var match []string
 
 	for _, re := range regexes {
@@ -40,7 +40,7 @@ func LoopRegexesSplit(regexes []*regexp.Regexp, str string, highestPosition bool
 	return match
 }
 
-func LoopRegexesMatch(regexes []*regexp.Regexp, str string, highestPosition bool) ([]string, *regexp.Regexp) {
+func _LoopRegexesMatch(regexes []*regexp.Regexp, str string, highestPosition bool) ([]string, *regexp.Regexp) {
 	var match []string
 	var regex *regexp.Regexp
 
