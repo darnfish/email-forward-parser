@@ -37,35 +37,38 @@ func LoopRegexesSplit(regexes []*regexp.Regexp, str string, highestPosition bool
 		}
 	}
 
-	if match == nil {
-		return []string{}
-	}
-
 	return match
 }
 
-func LoopRegexesMatch(regexes []*regexp.Regexp, str string, highestPosition bool) []string {
+func LoopRegexesMatch(regexes []*regexp.Regexp, str string, highestPosition bool) ([]string, *regexp.Regexp) {
 	var match []string
+	var regex *regexp.Regexp
+
+	matchIndex := 0
 
 	for _, re := range regexes {
 		currentMatch := re.FindStringSubmatch(str)
+
 		if currentMatch != nil {
+			currentMatchIndex := re.FindStringIndex(str)[0]
+
 			if highestPosition {
-				if match == nil {
+				if match == nil || matchIndex > currentMatchIndex {
 					match = currentMatch
-				} else if match[0] < currentMatch[0] {
-					match = currentMatch
+					matchIndex = currentMatchIndex
+
+					regex = re
 				}
 			} else {
 				match = currentMatch
+				matchIndex = currentMatchIndex // why the warn?
+
+				regex = re
+
 				break
 			}
 		}
 	}
 
-	if match == nil {
-		return []string{}
-	}
-
-	return match
+	return match, regex
 }
