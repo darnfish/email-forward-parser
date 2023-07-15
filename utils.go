@@ -131,19 +131,3 @@ func reconciliateSplitMatch(match []string, minSubstrings int, defaultSubstrings
 
 	return str
 }
-
-func trimArrayForLogging(arr []string) string {
-	out := ""
-
-	for i, item := range arr {
-		max := 10
-
-		if len(item) < max {
-			max = len(item)
-		}
-
-		out = out + " " + fmt.Sprint(i) + ". " + strings.ReplaceAll(item[0:max], "\n", "NL")
-	}
-
-	return out
-}
