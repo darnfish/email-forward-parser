@@ -1,7 +1,6 @@
 package emailforwardparser
 
 import (
-	"fmt"
 	"strings"
 	"unicode"
 
