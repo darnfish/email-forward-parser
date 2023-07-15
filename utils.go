@@ -13,9 +13,13 @@ func trimString(s string) string {
 }
 
 func preprocessString(s string) string {
-	return strings.TrimFunc(s, func(r rune) bool {
+	s = strings.TrimFunc(s, func(r rune) bool {
 		return !unicode.IsGraphic(r)
 	})
+
+	s = strings.ReplaceAll(s, "\uFEFF", "")
+
+	return s
 }
 
 // https://stackoverflow.com/a/53587770/7082789

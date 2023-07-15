@@ -37,10 +37,6 @@ func LoopRegexesSplit(regexes []*regexp.Regexp, str string, highestPosition bool
 		}
 	}
 
-	if match == nil {
-		return []string{}
-	}
-
 	return match
 }
 

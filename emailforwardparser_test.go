@@ -77,7 +77,7 @@ func _TestEmail(t *testing.T, result ReadResult, entryName string, skipFrom bool
 
 	if !skipBody {
 		if result.Email.Body != _Body {
-			t.Error(entryName, "result.Email.Body != _Body")
+			t.Error(entryName, "result.Email.Body != _Body", result.Email.Body)
 		}
 	}
 
@@ -309,6 +309,70 @@ func TestCommon(t *testing.T) {
 
 		if len(result.Message) > 0 {
 			t.Error("result.Message != null")
+		}
+	})
+}
+
+func TestAlternative1(t *testing.T) {
+	_LoopTests([]string{
+		"apple_mail_en_body_alt_1",
+		"gmail_en_body_alt_1",
+		"hubspot_en_body_alt_1",
+		"missive_en_body_alt_1",
+		"outlook_live_en_body_alt_1,outlook_live_en_subject",
+		"new_outlook_2019_en_body_alt_1,new_outlook_2019_en_subject",
+		"yahoo_en_body_alt_1",
+		"thunderbird_en_body_alt_1",
+	}, func(result ReadResult, entryName string) {
+		_TestEmail(t, result, entryName, false, true, true, true, false)
+
+		if len(result.Email.To[0].Name) > 0 {
+			t.Error(entryName)
+		}
+
+		if result.Email.To[0].Address != _ToAddress1 {
+			t.Error(entryName)
+		}
+
+		if len(result.Email.To[1].Name) > 0 {
+			t.Error(entryName)
+		}
+
+		if result.Email.To[1].Address != _ToAddress2 {
+			t.Error(entryName)
+		}
+
+		if len(result.Email.CC) > 0 {
+			t.Error(entryName)
+		}
+	})
+}
+
+func TestAlternative2(t *testing.T) {
+	_LoopTests([]string{
+		"apple_mail_en_body_alt_2",
+		"gmail_en_body_alt_2",
+		"hubspot_en_body_alt_2",
+		"ionos_one_and_one_en_body_alt_2",
+		"missive_en_body_alt_2",
+		"outlook_live_en_body_alt_2,outlook_live_en_subject",
+		"new_outlook_2019_en_body_alt_2,new_outlook_2019_en_subject",
+		"outlook_2019_en_body_alt_2,outlook_2019_subject",
+		"yahoo_en_body_alt_2",
+		"thunderbird_en_body_alt_2",
+	}, func(result ReadResult, entryName string) {
+		_TestEmail(t, result, entryName, false, true, entryName == "outlook_2019_en_body_alt_2" || entryName == "ionos_one_and_one_en_body_alt_2", false, false)
+
+		switch entryName {
+		case "outlook_2019_en_body_alt_2":
+		default:
+			if result.Email.To[0].Address != _ToAddress1 {
+				t.Error(entryName)
+			}
+
+			if result.Email.To[1].Address != _ToAddress2 {
+				t.Error(entryName)
+			}
 		}
 	})
 }
