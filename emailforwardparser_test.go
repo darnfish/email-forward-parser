@@ -376,3 +376,85 @@ func TestAlternative2(t *testing.T) {
 		}
 	})
 }
+
+func TestAlternative3(t *testing.T) {
+	_LoopTests([]string{
+		"apple_mail_en_body_alt_3",
+		"gmail_en_body_alt_3",
+		"missive_en_body_alt_3",
+		"outlook_live_en_body_alt_3,outlook_live_en_subject",
+		"new_outlook_2019_en_body_alt_3,new_outlook_2019_en_subject",
+		"yahoo_en_body_alt_3",
+		"thunderbird_en_body_alt_3",
+	}, func(result ReadResult, entryName string) {
+		_TestEmail(t, result, entryName, false, true, true, true, false)
+
+		if result.Email.To[0].Name != _ToName1 {
+			t.Error(entryName)
+		}
+
+		if result.Email.To[0].Address != _ToAddress1 {
+			t.Error(entryName)
+		}
+
+		if len(result.Email.To[1].Name) > 0 {
+			t.Error(entryName)
+		}
+
+		if result.Email.To[1].Address != _ToAddress2 {
+			t.Error(entryName)
+		}
+
+		if len(result.Email.CC[0].Name) > 0 {
+			t.Error(entryName)
+		}
+
+		if result.Email.CC[0].Address != _CcAddress1 {
+			t.Error(entryName)
+		}
+
+		if result.Email.CC[1].Name != _CcName2 {
+			t.Error(entryName)
+		}
+
+		if result.Email.CC[1].Address != _CcAddress2 {
+			t.Error(entryName)
+		}
+	})
+}
+
+func TestAlternative4(t *testing.T) {
+}
+
+func TestAlternative5(t *testing.T) {
+}
+
+func TestAlternative6(t *testing.T) {
+}
+
+func TestAlternative7(t *testing.T) {
+}
+
+func TestAlternative8(t *testing.T) {
+}
+
+func TestAlternative9(t *testing.T) {
+}
+
+func TestAlternative10(t *testing.T) {
+}
+
+func TestAlternative11(t *testing.T) {
+}
+
+func TestAlternative12(t *testing.T) {
+}
+
+func TestAlternative13(t *testing.T) {
+}
+
+func TestAlternative14(t *testing.T) {
+}
+
+func TestAlternative15(t *testing.T) {
+}

@@ -44,17 +44,27 @@ func LoopRegexesMatch(regexes []*regexp.Regexp, str string, highestPosition bool
 	var match []string
 	var regex *regexp.Regexp
 
+	matchIndex := 0
+
 	for _, re := range regexes {
 		currentMatch := re.FindStringSubmatch(str)
+
 		if currentMatch != nil {
+			currentMatchIndex := re.FindStringIndex(str)[0]
+
 			if highestPosition {
-				if match == nil || match[0] < currentMatch[0] {
+				if match == nil || matchIndex > currentMatchIndex {
 					match = currentMatch
+					matchIndex = currentMatchIndex
+
 					regex = re
 				}
 			} else {
 				match = currentMatch
+				matchIndex = currentMatchIndex // why the warn?
+
 				regex = re
+
 				break
 			}
 		}
