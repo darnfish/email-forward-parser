@@ -7,6 +7,17 @@ Parses forwarded emails and extracts original content.
 
 This is a Go port of [crisp-oss/email-forward-parser](https://github.com/crisp-oss/email-forward-parser).
 
+## Who uses it?
+
+<table>
+<tr>
+<td align="center"><a href="https://pickupapp.io/"><img src="https://pickup.s3.darn.cloud/icons/256x256.png" height="64" /></a></td>
+</tr>
+<tr>
+<td align="center">Pickup</td>
+</tr>
+</table>
+
 ## Installation
 ```
 go get "https://github.com/darnfish/email-forward-parser"
