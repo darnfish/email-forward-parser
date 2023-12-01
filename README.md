@@ -11,7 +11,7 @@ This is a Go port of [crisp-oss/email-forward-parser](https://github.com/crisp-o
 
 <table>
 <tr>
-<td align="center"><a href="https://pickupapp.io/"><img src="https://pickup.s3.darn.cloud/icons/256x256.png" height="64" /></a></td>
+<td align="center"><a href="https://pickupapp.io/"><img src="https://s3.darn.cloud/pickup/icons/256x256.png" height="64" /></a></td>
 </tr>
 <tr>
 <td align="center">Pickup</td>
