@@ -324,14 +324,14 @@ func TestCommon(t *testing.T) {
 
 func TestAlternative1(t *testing.T) {
 	_LoopTests([]string{
-		"apple_mail_en_body_alt_1",
-		"gmail_en_body_alt_1",
-		"hubspot_en_body_alt_1",
-		"missive_en_body_alt_1",
-		"outlook_live_en_body_alt_1,outlook_live_en_subject",
-		"new_outlook_2019_en_body_alt_1,new_outlook_2019_en_subject",
-		"yahoo_en_body_alt_1",
-		"thunderbird_en_body_alt_1",
+		"apple_mail_en_body_variant_1",
+		"gmail_en_body_variant_1",
+		"hubspot_en_body_variant_1",
+		"missive_en_body_variant_1",
+		"outlook_live_en_body_variant_1,outlook_live_en_subject",
+		"new_outlook_2019_en_body_variant_1,new_outlook_2019_en_subject",
+		"yahoo_en_body_variant_1",
+		"thunderbird_en_body_variant_1",
 	}, func(result ReadResult, entryName string) {
 		_TestEmail(t, result, entryName, false, true, true, true, false)
 
@@ -359,21 +359,21 @@ func TestAlternative1(t *testing.T) {
 
 func TestAlternative2(t *testing.T) {
 	_LoopTests([]string{
-		"apple_mail_en_body_alt_2",
-		"gmail_en_body_alt_2",
-		"hubspot_en_body_alt_2",
-		"ionos_one_and_one_en_body_alt_2",
-		"missive_en_body_alt_2",
-		"outlook_live_en_body_alt_2,outlook_live_en_subject",
-		"new_outlook_2019_en_body_alt_2,new_outlook_2019_en_subject",
-		"outlook_2019_en_body_alt_2,outlook_2019_subject",
-		"yahoo_en_body_alt_2",
-		"thunderbird_en_body_alt_2",
+		"apple_mail_en_body_variant_2",
+		"gmail_en_body_variant_2",
+		"hubspot_en_body_variant_2",
+		"ionos_one_and_one_en_body_variant_2",
+		"missive_en_body_variant_2",
+		"outlook_live_en_body_variant_2,outlook_live_en_subject",
+		"new_outlook_2019_en_body_variant_2,new_outlook_2019_en_subject",
+		"outlook_2019_en_body_variant_2,outlook_2019_subject",
+		"yahoo_en_body_variant_2",
+		"thunderbird_en_body_variant_2",
 	}, func(result ReadResult, entryName string) {
-		_TestEmail(t, result, entryName, false, true, entryName == "outlook_2019_en_body_alt_2" || entryName == "ionos_one_and_one_en_body_alt_2", false, false)
+		_TestEmail(t, result, entryName, false, true, entryName == "outlook_2019_en_body_variant_2" || entryName == "ionos_one_and_one_en_body_variant_2", false, false)
 
 		switch entryName {
-		case "outlook_2019_en_body_alt_2":
+		case "outlook_2019_en_body_variant_2":
 		default:
 			if result.Email.To[0].Address != _TestToAddress1 {
 				t.Error(entryName)
@@ -388,13 +388,13 @@ func TestAlternative2(t *testing.T) {
 
 func TestAlternative3(t *testing.T) {
 	_LoopTests([]string{
-		"apple_mail_en_body_alt_3",
-		"gmail_en_body_alt_3",
-		"missive_en_body_alt_3",
-		"outlook_live_en_body_alt_3,outlook_live_en_subject",
-		"new_outlook_2019_en_body_alt_3,new_outlook_2019_en_subject",
-		"yahoo_en_body_alt_3",
-		"thunderbird_en_body_alt_3",
+		"apple_mail_en_body_variant_3",
+		"gmail_en_body_variant_3",
+		"missive_en_body_variant_3",
+		"outlook_live_en_body_variant_3,outlook_live_en_subject",
+		"new_outlook_2019_en_body_variant_3,new_outlook_2019_en_subject",
+		"yahoo_en_body_variant_3",
+		"thunderbird_en_body_variant_3",
 	}, func(result ReadResult, entryName string) {
 		_TestEmail(t, result, entryName, false, true, true, true, false)
 
@@ -434,15 +434,15 @@ func TestAlternative3(t *testing.T) {
 
 func TestAlternative4(t *testing.T) {
 	_LoopTests([]string{
-		"apple_mail_en_body_alt_4",
-		"gmail_en_body_alt_4",
-		"hubspot_en_body_alt_4",
-		"missive_en_body_alt_4",
-		"outlook_live_en_body_alt_4,outlook_live_en_subject_alt_4",
-		"new_outlook_2019_en_body_alt_4,new_outlook_2019_en_subject_alt_4",
-		"outlook_2019_en_body_alt_4,outlook_2019_en_subject_alt_4",
-		"yahoo_en_body_alt_4",
-		"thunderbird_en_body_alt_4",
+		"apple_mail_en_body_variant_4",
+		"gmail_en_body_variant_4",
+		"hubspot_en_body_variant_4",
+		"missive_en_body_variant_4",
+		"outlook_live_en_body_variant_4,outlook_live_en_subject_variant_4",
+		"new_outlook_2019_en_body_variant_4,new_outlook_2019_en_subject_variant_4",
+		"outlook_2019_en_body_variant_4,outlook_2019_en_subject_variant_4",
+		"yahoo_en_body_variant_4",
+		"thunderbird_en_body_variant_4",
 	}, func(result ReadResult, entryName string) {
 		if result.Forwarded {
 			t.Error(entryName)
@@ -452,7 +452,7 @@ func TestAlternative4(t *testing.T) {
 
 func TestAlternative5(t *testing.T) {
 	_LoopTests([]string{
-		"apple_mail_en_body_alt_5",
+		"apple_mail_en_body_variant_5",
 	}, func(result ReadResult, entryName string) {
 		_TestEmail(t, result, entryName, true, false, false, true, false)
 
@@ -468,7 +468,7 @@ func TestAlternative5(t *testing.T) {
 
 func TestAlternative6(t *testing.T) {
 	_LoopTests([]string{
-		"apple_mail_en_body_alt_6",
+		"apple_mail_en_body_variant_6",
 	}, func(result ReadResult, entryName string) {
 		_TestEmail(t, result, entryName, false, false, true, true, false)
 	})
@@ -476,7 +476,7 @@ func TestAlternative6(t *testing.T) {
 
 func TestAlternative7(t *testing.T) {
 	_LoopTests([]string{
-		"apple_mail_en_body_alt_7",
+		"apple_mail_en_body_variant_7",
 	}, func(result ReadResult, entryName string) {
 		_TestEmail(t, result, entryName, false, true, true, true, false)
 
@@ -516,7 +516,7 @@ func TestAlternative7(t *testing.T) {
 
 func TestAlternative8(t *testing.T) {
 	_LoopTests([]string{
-		"outlook_live_en_body_alt_8",
+		"outlook_live_en_body_variant_8",
 	}, func(result ReadResult, entryName string) {
 		_TestEmail(t, result, entryName, false, false, false, false, true)
 
@@ -533,7 +533,7 @@ func TestAlternative8(t *testing.T) {
 
 func TestAlternative9(t *testing.T) {
 	_LoopTests([]string{
-		"outlook_live_en_body_alt_9",
+		"outlook_live_en_body_variant_9",
 	}, func(result ReadResult, entryName string) {
 		_TestEmail(t, result, entryName, false, false, false, false, false)
 	})
@@ -541,7 +541,7 @@ func TestAlternative9(t *testing.T) {
 
 func TestAlternative10(t *testing.T) {
 	_LoopTests([]string{
-		"outlook_live_en_body_alt_10,outlook_live_en_subject_alt_10",
+		"outlook_live_en_body_variant_10,outlook_live_en_subject_variant_10",
 	}, func(result ReadResult, entryName string) {
 		_TestEmail(t, result, entryName, false, false, false, false, false)
 	})
@@ -549,7 +549,7 @@ func TestAlternative10(t *testing.T) {
 
 func TestAlternative11(t *testing.T) {
 	_LoopTests([]string{
-		"outlook_live_en_body_alt_11",
+		"outlook_live_en_body_variant_11",
 	}, func(result ReadResult, entryName string) {
 		_TestEmail(t, result, entryName, true, true, true, true, false)
 
@@ -597,7 +597,7 @@ func TestAlternative11(t *testing.T) {
 
 func TestAlternative12(t *testing.T) {
 	_LoopTests([]string{
-		"unknown_en_body_alt_12,unknown_en_subject",
+		"unknown_en_body_variant_12,unknown_en_subject",
 	}, func(result ReadResult, entryName string) {
 		_TestEmail(t, result, entryName, true, true, true, true, false)
 
@@ -621,7 +621,7 @@ func TestAlternative12(t *testing.T) {
 
 func TestAlternative13(t *testing.T) {
 	_LoopTests([]string{
-		"apple_mail_en_body_alt_13",
+		"apple_mail_en_body_variant_13",
 	}, func(result ReadResult, entryName string) {
 		_TestEmail(t, result, entryName, false, false, false, false, true)
 
@@ -646,11 +646,11 @@ func TestAlternative13(t *testing.T) {
 
 func TestAlternative14(t *testing.T) {
 	_LoopTests([]string{
-		"gmail_en_body_alt_14",
-		"outlook_live_en_body_alt_14,outlook_live_en_subject",
-		"new_outlook_2019_en_body_alt_14,new_outlook_2019_fr_subject",
-		"new_outlook_2019_en_body_alt_14_1,new_outlook_2019_fr_subject",
-		"thunderbird_en_body_alt_14",
+		"gmail_en_body_variant_14",
+		"outlook_live_en_body_variant_14,outlook_live_en_subject",
+		"new_outlook_2019_en_body_variant_14,new_outlook_2019_fr_subject",
+		"new_outlook_2019_en_body_variant_14_1,new_outlook_2019_fr_subject",
+		"thunderbird_en_body_variant_14",
 	}, func(result ReadResult, entryName string) {
 		_TestEmail(t, result, entryName, false, false, false, false, true)
 
@@ -658,7 +658,7 @@ func TestAlternative14(t *testing.T) {
 		separator := fmt.Sprintf("Subject: %s\n", _TestSubject)
 
 		switch entryName {
-		case "thunderbird_en_body_alt_14":
+		case "thunderbird_en_body_variant_14":
 			separator = fmt.Sprintf("CC: 	%s <%s>, %s <%s>\n", _TestCcName1, _TestCcAddress1, _TestCcName2, _TestCcAddress2)
 		}
 
@@ -673,10 +673,10 @@ func TestAlternative14(t *testing.T) {
 
 func TestAlternative15(t *testing.T) {
 	_LoopTests([]string{
-		"gmail_en_body_alt_15",
-		"outlook_live_en_body_alt_15,outlook_live_en_subject",
-		"new_outlook_2019_en_body_alt_15,new_outlook_2019_fr_subject",
-		"thunderbird_en_body_alt_15",
+		"gmail_en_body_variant_15",
+		"outlook_live_en_body_variant_15,outlook_live_en_subject",
+		"new_outlook_2019_en_body_variant_15,new_outlook_2019_fr_subject",
+		"thunderbird_en_body_variant_15",
 	}, func(result ReadResult, entryName string) {
 		_TestEmail(t, result, entryName, false, false, false, false, true)
 
@@ -684,7 +684,7 @@ func TestAlternative15(t *testing.T) {
 		separator := fmt.Sprintf("Subject: %s\n", _TestSubject)
 
 		switch entryName {
-		case "thunderbird_en_body_alt_15":
+		case "thunderbird_en_body_variant_15":
 			separator = fmt.Sprintf("CC: 	%s <%s>, %s <%s>\n", _TestCcName1, _TestCcAddress1, _TestCcName2, _TestCcAddress2)
 		}
 
